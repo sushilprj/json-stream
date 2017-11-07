@@ -71,15 +71,18 @@ module JSON
         stream.close
       end
 
-      # Add this instance method
-      def parse(json)
-        stream = json.is_a?(String) ? StringIO.new(json) : json
-        builder = Builder.new(self)
-        while (buf = stream.read(BUF_SIZE)) != nil
-          self << buf
+      # This instance method use file stream
+      def parse(stream)
+        if stream.is_a?(File)
+          builder = Builder.new(self)
+          while (buf = stream.read(BUF_SIZE)) != nil
+            self << buf
+          end
+          self.finish
+          # builder.result
+        else
+          raise "Allow only file stream."
         end
-        self.finish
-        builder.result
       ensure
         stream.close
       end
@@ -587,7 +590,7 @@ module JSON
       end
 
       def error(message)
-        raise ParserError, "#{message}: char #{@pos}"
+        #raise ParserError, "#{message}: char #{@pos}"
       end
     end
   end
