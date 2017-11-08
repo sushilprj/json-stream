@@ -74,7 +74,7 @@ module JSON
       # This instance method use file stream
       def parse(stream)
         if stream.is_a?(File)
-          builder = Builder.new(self)
+          # builder = Builder.new(self)
           while (buf = stream.read(BUF_SIZE)) != nil
             self << buf
           end
